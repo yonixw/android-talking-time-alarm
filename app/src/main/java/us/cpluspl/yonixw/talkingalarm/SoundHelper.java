@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,10 +22,14 @@ public class SoundHelper {
     }
 
     private MediaPlayer getMediaPlayer( String localFileName) {
-        return  MediaPlayer.create(
+        MediaPlayer mp =  MediaPlayer.create(
                 myContext,
                 Uri.fromFile(new File (IOHelper.getStorageDir(myContext), localFileName))
         );
+        if (mp == null)
+            Toast.makeText(myContext, "Cant load file:" + localFileName, Toast.LENGTH_LONG).show();
+
+        return mp;
     }
 
     private void addSound(String shortName) {

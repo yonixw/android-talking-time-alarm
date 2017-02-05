@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         pickTime = (TimePicker) findViewById(R.id.pickTime);
         txtPath = (TextView) findViewById(R.id.txtLoadPath);
 
-        mySounds = new SoundHelper(getApplicationContext());
+        initSoundHelper();
 
         // Get save path:
         txtPath.setText( getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         audiManager = (AudioManager)getSystemService(getApplicationContext().AUDIO_SERVICE);
 
-
+        tellTime(Calendar.getInstance());
     }
 
     @Override
@@ -158,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
 
     /************    PLAYING SOUND   *******************/
 
-    public void clickPlay(View view) {
-
+    private void initSoundHelper() {
+        mySounds = new SoundHelper(getApplicationContext());
 
         mySounds.setPlaybackFinishListener(new SoundHelper.PlaybackFinishListener() {
             @Override
@@ -170,6 +170,25 @@ public class MainActivity extends AppCompatActivity {
                 autoFinish();
             }
         });
+    }
+
+    private void tellTime(Calendar g) {
+
+
+        HebrewSpeakingConstantSounds.addDateSounds(g,mySounds);
+        setMaxVolume();
+        try {
+            Thread.sleep(200,0); // let volume adjust
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        mySounds.playAllAsync();
+    }
+
+    public void clickPlay(View view) {
+
+
+        stopShutdown = true;
 
         Calendar g =  GregorianCalendar.getInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -181,14 +200,7 @@ public class MainActivity extends AppCompatActivity {
             g.set(Calendar.HOUR, pickTime.getCurrentHour());
         }
 
-        HebrewSpeakingConstantSounds.addDateSounds(g,mySounds);
-        setMaxVolume();
-        try {
-            Thread.sleep(200,0); // let volume adjust
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        mySounds.playAllAsync();
+        tellTime(g);
     }
 
     Boolean stopShutdown = false;
