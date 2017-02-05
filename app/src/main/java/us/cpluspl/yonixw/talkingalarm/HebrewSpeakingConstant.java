@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 /**
  * Created by YoniWas on 05/02/2017.
  */
-public class TimeSpeakingConstant {
+public class HebrewSpeakingConstant {
     static String[] hoursWord = {
             "eeffess",
             "ehhaad",

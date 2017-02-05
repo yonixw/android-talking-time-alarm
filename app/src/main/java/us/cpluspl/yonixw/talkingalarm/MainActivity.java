@@ -1,7 +1,5 @@
 package us.cpluspl.yonixw.talkingalarm;
 
-import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -12,12 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -146,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void Speek(Calendar g, String tag ) throws InterruptedException {
         // Get hebrew text of time:
-        String timeHebrewText =  TimeSpeakingConstant.dateToText(g);
+        String timeHebrewText =  HebrewSpeakingConstant.dateToText(g);
 
         // Set max volume
         MainActivity.this.setMaxVolume();
