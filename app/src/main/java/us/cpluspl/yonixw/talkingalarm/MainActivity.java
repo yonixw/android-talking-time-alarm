@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -23,9 +25,14 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    SoundPool mySoundPool;
+
+    public  static  final String LOG_TAG = "YONI-ALARM";
     public static final String CLOSE_AFTER_PLAY = "close_after";
+
     TextToSpeech english;
     TimePicker pickTime;
+    TextView txtPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         pickTime = (TimePicker) findViewById(R.id.pickTime);
+        txtPath = (TextView) findViewById(R.id.txtLoadPath);
+
+        // Get save path:
+        txtPath.setText( getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
 
         // Enforce portrait
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -45,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                     english.setLanguage(Locale.UK); // UK is more natural than US!!
 
                     // Only from here we can assume TextToSpeach engine is bound!
-                    speakAndClose();
+                    //speakAndClose();
                 }
                 else  {
                     Toast.makeText(MainActivity.this, "Cant init speak " + status
@@ -70,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(String utteranceId) {
-                Log.e("TalkingClock", "error on " + utteranceId);
+                Log.e(LOG_TAG, "error on " + utteranceId);
             }
         });
 
@@ -130,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.d("D/Yoni", "Now should speak and close");
+        Log.d(LOG_TAG, "Now should speak and close");
     }
 
     private void Speek(Calendar g, String tag ) throws InterruptedException {

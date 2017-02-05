@@ -22,4 +22,12 @@
         android:text="Speak"
         android:id="@+id/btnSpeak"
         android:onClick="clickspeak"/>
+
+    <TextView
+        android:id="@+id/txtLoadPath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnSpeak"
+        android:enabled="false"
+        android:text="PATH"/>
 </RelativeLayout>
