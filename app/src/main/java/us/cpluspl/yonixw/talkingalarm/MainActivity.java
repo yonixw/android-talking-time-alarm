@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     TimePicker pickTime;
     TextView txtPath;
 
+    SoundHelper mySounds;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         pickTime = (TimePicker) findViewById(R.id.pickTime);
         txtPath = (TextView) findViewById(R.id.txtLoadPath);
+
+        mySounds = new SoundHelper(getApplicationContext());
 
         // Get save path:
         txtPath.setText( getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
@@ -160,13 +164,18 @@ public class MainActivity extends AppCompatActivity {
     /************    PLAYING SOUND   *******************/
 
     public void clickPlay(View view) {
-        MediaPlayer player = SoundHelper.getMediaPlayer(view.getContext(),"try.wav");
-        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        mySounds.addSound("try.wav");
+        mySounds.addSound("try.wav");
+        mySounds.addSound("try.wav");
+
+        mySounds.setPlaybackFinishListener(new SoundHelper.PlaybackFinishListener() {
             @Override
-            public void onCompletion(MediaPlayer mp) {
-                Toast.makeText(MainActivity.this, "Done playing!", Toast.LENGTH_SHORT).show();
+            public void onPlaybackFinish() {
+                Log.d(LOG_TAG,"Got finish event!");
+                mySounds.releaseAllSounds();
             }
         });
-        player.start();
+
+        mySounds.playAllAsync();
     }
 }

@@ -1,48 +1,78 @@
 package us.cpluspl.yonixw.talkingalarm;
 
 import android.content.Context;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.net.Uri;
-import android.os.Build;
+import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by YoniWas on 05/02/2017.
  */
 public class SoundHelper {
 
-    public static final int MAX_STREAMS = 10;
+    Context myContext;
+    ArrayList<MediaPlayer> loadedSounds = new ArrayList<MediaPlayer>() ;
 
-    public  static  SoundPool makeSoundPool() {
-        //http://stackoverflow.com/questions/17069955/
-
-        SoundPool result = null;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AudioAttributes attributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .build();
-            result = new SoundPool.Builder()
-                    .setAudioAttributes(attributes)
-                    .setMaxStreams(MAX_STREAMS)
-                    .build();
-        }
-        else  {
-            result = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC, 0); // count, type, no-use
-        }
-
-        return  result;
+    public SoundHelper(Context context) {
+        myContext =context;
     }
 
-    public static MediaPlayer getMediaPlayer(Context context, String localFileName) {
+    private MediaPlayer getMediaPlayer( String localFileName) {
         return  MediaPlayer.create(
-                context,
-                Uri.fromFile(new File (IOHelper.getStorageDir(context), localFileName))
+                myContext,
+                Uri.fromFile(new File (IOHelper.getStorageDir(myContext), localFileName))
         );
+    }
+
+    public void addSound(String shortName) {
+        loadedSounds.add(getMediaPlayer(shortName));
+    }
+
+    public void releaseAllSounds() {
+        for (MediaPlayer m : loadedSounds) {
+            m.release();
+        }
+        loadedSounds.clear();
+    }
+
+    public void playAllAsync() {
+        Thread r = new Thread() {
+
+
+            @Override
+            public void  run() {
+                int counter = 0;
+                for (MediaPlayer m : loadedSounds) {
+                    Log.d(MainActivity.LOG_TAG, "Playing sound: " + counter);
+                    m.start();
+                    while (m.isPlaying()) {}
+                }
+
+                raisePlayBackFinishEvent();
+            }
+         };
+
+
+        r.start();
+    }
+
+    // Event when all activites done.
+    public interface PlaybackFinishListener {
+        public void onPlaybackFinish() ;
+    }
+
+    private PlaybackFinishListener myPlaybackFinishListener = null;
+    public void setPlaybackFinishListener(PlaybackFinishListener listener) {
+        myPlaybackFinishListener = listener;
+    }
+
+    private void raisePlayBackFinishEvent() {
+        Log.d(MainActivity.LOG_TAG, "Playback Finished!");
+        if(myPlaybackFinishListener !=null) {
+            myPlaybackFinishListener.onPlaybackFinish();
+        }
     }
 }
