@@ -3,7 +3,9 @@ package us.cpluspl.yonixw.talkingalarm;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Build;
 
 import java.io.File;
@@ -37,11 +39,10 @@ public class SoundHelper {
         return  result;
     }
 
-    public  static int addSound(
-            Context context,
-            SoundPool sp, String privatefileName, int priority) {
-        File fullpath = new File (IOHelper.getStorageDir(context), privatefileName);
-
-        return sp.load(fullpath.getAbsolutePath(), priority);
+    public static MediaPlayer getMediaPlayer(Context context, String localFileName) {
+        return  MediaPlayer.create(
+                context,
+                Uri.fromFile(new File (IOHelper.getStorageDir(context), localFileName))
+        );
     }
 }

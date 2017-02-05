@@ -2,7 +2,9 @@ package us.cpluspl.yonixw.talkingalarm;
 
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -20,9 +22,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-
-    SoundPool mySoundPool;
-
     public  static  final String LOG_TAG = "YONI-ALARM";
     public static final String CLOSE_AFTER_PLAY = "close_after";
 
@@ -37,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         pickTime = (TimePicker) findViewById(R.id.pickTime);
         txtPath = (TextView) findViewById(R.id.txtLoadPath);
-
-        mySoundPool = SoundHelper.makeSoundPool();
 
         // Get save path:
         txtPath.setText( getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
@@ -163,17 +160,13 @@ public class MainActivity extends AppCompatActivity {
     /************    PLAYING SOUND   *******************/
 
     public void clickPlay(View view) {
-
-        int tryId =  SoundHelper.addSound(view.getContext(), mySoundPool, "try.wav", 0);
-
-
-        mySoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-            //http://stackoverflow.com/questions/5202510
+        MediaPlayer player = SoundHelper.getMediaPlayer(view.getContext(),"try.wav");
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
-            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                mySoundPool.play(sampleId,1.0f,1.0f,0,0,1.0f);
+            public void onCompletion(MediaPlayer mp) {
+                Toast.makeText(MainActivity.this, "Done playing!", Toast.LENGTH_SHORT).show();
             }
         });
-
+        player.start();
     }
 }
