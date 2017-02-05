@@ -1,14 +1,19 @@
 package us.cpluspl.yonixw.talkingalarm;
 
+import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 
+import java.io.File;
+
 /**
  * Created by YoniWas on 05/02/2017.
  */
 public class SoundHelper {
+
+    public static final int MAX_STREAMS = 10;
 
     public  static  SoundPool makeSoundPool() {
         //http://stackoverflow.com/questions/17069955/
@@ -22,12 +27,21 @@ public class SoundHelper {
                     .build();
             result = new SoundPool.Builder()
                     .setAudioAttributes(attributes)
+                    .setMaxStreams(MAX_STREAMS)
                     .build();
         }
         else  {
-            result = new SoundPool(10, AudioManager.STREAM_MUSIC, 0); // count, type, no-use
+            result = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC, 0); // count, type, no-use
         }
 
         return  result;
+    }
+
+    public  static int addSound(
+            Context context,
+            SoundPool sp, String privatefileName, int priority) {
+        File fullpath = new File (IOHelper.getStorageDir(context), privatefileName);
+
+        return sp.load(fullpath.getAbsolutePath(), priority);
     }
 }

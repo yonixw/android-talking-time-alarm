@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         pickTime = (TimePicker) findViewById(R.id.pickTime);
         txtPath = (TextView) findViewById(R.id.txtLoadPath);
 
+        mySoundPool = SoundHelper.makeSoundPool();
+
         // Get save path:
         txtPath.setText( getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
 
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         audiManager.setStreamVolume(audiManager.STREAM_MUSIC, currentVolume, 0);
     }
 
+    /************    TEXT TO SPEECH   *******************/
 
     public void clickspeak(View view) throws InterruptedException  {
         Calendar g =  GregorianCalendar.getInstance();
@@ -155,5 +158,22 @@ public class MainActivity extends AppCompatActivity {
         else  {
             english.speak(timeHebrewText, TextToSpeech.QUEUE_ADD, null);
         }
+    }
+
+    /************    PLAYING SOUND   *******************/
+
+    public void clickPlay(View view) {
+
+        int tryId =  SoundHelper.addSound(view.getContext(), mySoundPool, "try.wav", 0);
+
+
+        mySoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            //http://stackoverflow.com/questions/5202510
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                mySoundPool.play(sampleId,1.0f,1.0f,0,0,1.0f);
+            }
+        });
+
     }
 }
