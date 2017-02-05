@@ -2,9 +2,6 @@ package us.cpluspl.yonixw.talkingalarm;
 
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.SoundPool;
-import android.net.Uri;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -146,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void Speek(Calendar g, String tag ) throws InterruptedException {
         // Get hebrew text of time:
-        String timeHebrewText =  HebrewSpeakingConstant.dateToText(g);
+        String timeHebrewText =  HebrewSpeakingConstantSpeach.dateToText(g);
 
         // Set max volume
         MainActivity.this.setMaxVolume();
@@ -164,15 +161,14 @@ public class MainActivity extends AppCompatActivity {
     /************    PLAYING SOUND   *******************/
 
     public void clickPlay(View view) {
-        mySounds.addSound("try.wav");
-        mySounds.addSound("try.wav");
-        mySounds.addSound("try.wav");
 
         mySounds.setPlaybackFinishListener(new SoundHelper.PlaybackFinishListener() {
             @Override
             public void onPlaybackFinish() {
                 Log.d(LOG_TAG,"Got finish event!");
                 mySounds.releaseAllSounds();
+
+                //finish();
             }
         });
 

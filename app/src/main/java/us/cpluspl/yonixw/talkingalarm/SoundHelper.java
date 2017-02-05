@@ -31,6 +31,10 @@ public class SoundHelper {
         loadedSounds.add(getMediaPlayer(shortName));
     }
 
+    public void addWAVSound(String shortName) {
+        addSound(shortName + ".wav");
+    }
+
     public void releaseAllSounds() {
         for (MediaPlayer m : loadedSounds) {
             m.release();

@@ -1,16 +1,19 @@
 package us.cpluspl.yonixw.talkingalarm;
 
-import android.util.Log;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.StringTokenizer;
+        import android.util.Log;
+
+        import java.util.Calendar;
+        import java.util.Date;
+        import java.util.GregorianCalendar;
+        import java.util.StringTokenizer;
+
 
 /**
- * Created by YoniWas on 05/02/2017.
+ * Created by YoniWas on 06/02/2017.
  */
-public class HebrewSpeakingConstant {
+public class HebrewSpeakingConstantSpeach {
+
     static String[] hoursWord = {
             "eeffess",
             "ehhaad",
