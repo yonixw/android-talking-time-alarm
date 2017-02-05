@@ -25,9 +25,9 @@ public class HebrewSpeakingConstantSounds {
     static String zeroWord = "00";
     static String andWord = "ve";
     static String minutesWord = "dakot";
-    static String hourWord = "shahot";
+    static String hourWord = "shaot";
 
-    static String tensPostfix = "esere";
+    static String tensPostfix = "esre";
     static String[] minutesTensWords = {
             "empty", // No Zero word
             "m10", // like h10
@@ -55,7 +55,7 @@ public class HebrewSpeakingConstantSounds {
         }
 
         sh.addWAVSound(hourWord);   // shaot
-        sh.addSound(andWord);       // ve -
+        sh.addWAVSound(andWord);       // ve -
 
         //Minutes
         if (minute == 0 ) {
@@ -83,6 +83,6 @@ public class HebrewSpeakingConstantSounds {
             }
         }
 
-        sh.addSound(minutesWord);  // dakot.
+        sh.addWAVSound(minutesWord);  // dakot.
     }
 }

@@ -27,7 +27,7 @@ public class SoundHelper {
         );
     }
 
-    public void addSound(String shortName) {
+    private void addSound(String shortName) {
         loadedSounds.add(getMediaPlayer(shortName));
     }
 
@@ -53,6 +53,7 @@ public class SoundHelper {
                     Log.d(MainActivity.LOG_TAG, "Playing sound: " + counter);
                     m.start();
                     while (m.isPlaying()) {}
+                    counter++;
                 }
 
                 raisePlayBackFinishEvent();

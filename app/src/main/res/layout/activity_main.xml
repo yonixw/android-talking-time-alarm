@@ -33,11 +33,21 @@
         android:onClick="clickPlay"
         />
 
+    <Button
+        android:id="@+id/btnStopClose"
+        android:layout_toRightOf="@id/btnPlayTime"
+        android:layout_below="@id/pickTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stay open"
+        android:onClick="clickStopClose"
+        />
+
     <TextView
         android:id="@+id/txtLoadPath"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnSpeak"
-        android:enabled="false"
+        android:background="@color/yello"
         android:text="PATH"/>
 </RelativeLayout>

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDone(String utteranceId) {
                 MainActivity.this.resumeVolume();
                 if (utteranceId.equals(CLOSE_AFTER_PLAY)){
-                    finish();
+                    autoFinish();
                 }
             }
 
@@ -111,9 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickspeak(View view) throws InterruptedException  {
         Calendar g =  GregorianCalendar.getInstance();
-
-        //Date trialTime = new Date();
-        //g.setTime(trialTime);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             g.set(Calendar.MINUTE, pickTime.getMinute());
@@ -162,16 +160,47 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickPlay(View view) {
 
+
         mySounds.setPlaybackFinishListener(new SoundHelper.PlaybackFinishListener() {
             @Override
             public void onPlaybackFinish() {
                 Log.d(LOG_TAG,"Got finish event!");
                 mySounds.releaseAllSounds();
-
-                //finish();
+                resumeVolume();
+                autoFinish();
             }
         });
 
+        Calendar g =  GregorianCalendar.getInstance();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            g.set(Calendar.MINUTE, pickTime.getMinute());
+            g.set(Calendar.HOUR, pickTime.getHour());
+        }
+        else  {
+            g.set(Calendar.MINUTE, pickTime.getCurrentMinute());
+            g.set(Calendar.HOUR, pickTime.getCurrentHour());
+        }
+
+        HebrewSpeakingConstantSounds.addDateSounds(g,mySounds);
+        setMaxVolume();
+        try {
+            Thread.sleep(200,0); // let volume adjust
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         mySounds.playAllAsync();
+    }
+
+    Boolean stopShutdown = false;
+    private void autoFinish() {
+        if (!stopShutdown)
+            finish();
+    }
+
+    public void clickStopClose(View view) {
+        // You have until the voice\speach finish reading to stop the app from closing!
+        Button btnStop = (Button)findViewById(R.id.btnStopClose);
+        btnStop.setEnabled(false);
+        stopShutdown = true;
     }
 }
