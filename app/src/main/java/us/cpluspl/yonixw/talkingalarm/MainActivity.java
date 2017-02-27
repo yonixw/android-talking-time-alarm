@@ -2,6 +2,7 @@ package us.cpluspl.yonixw.talkingalarm;
 
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         HebrewSpeakingConstantSounds.addDateSounds(g,mySounds);
         setMaxVolume();
         try {
-            Thread.sleep(200,0); // let volume adjust
+            Thread.sleep(1000,0); // let volume adjust
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -215,4 +217,9 @@ public class MainActivity extends AppCompatActivity {
         btnStop.setEnabled(false);
         stopShutdown = true;
     }
+
+    public void addRingtoneAtStart() {
+
+    }
+
 }

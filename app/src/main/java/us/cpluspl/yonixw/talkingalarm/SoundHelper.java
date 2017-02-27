@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -22,12 +23,17 @@ public class SoundHelper {
     }
 
     private MediaPlayer getMediaPlayer( String localFileName) {
+        Uri filePath = Uri.fromFile(new File (IOHelper.getStorageDir(myContext), localFileName));
         MediaPlayer mp =  MediaPlayer.create(
                 myContext,
-                Uri.fromFile(new File (IOHelper.getStorageDir(myContext), localFileName))
+                filePath
         );
-        if (mp == null)
+        if (mp == null) {
+            String logMessage = "Can't load file '" + localFileName
+                    + "'\nIn place: '" + filePath.toString() + "';";
+            Log.d(MainActivity.LOG_TAG, logMessage);
             Toast.makeText(myContext, "Cant load file:" + localFileName, Toast.LENGTH_LONG).show();
+        }
 
         return mp;
     }
@@ -55,9 +61,14 @@ public class SoundHelper {
             public void  run() {
                 int counter = 0;
                 for (MediaPlayer m : loadedSounds) {
-                    Log.d(MainActivity.LOG_TAG, "Playing sound: " + counter);
+                    Log.d(MainActivity.LOG_TAG, "Playing sound no. " + counter);
                     m.start();
-                    while (m.isPlaying()) {}
+                    while (m.isPlaying()) {
+                        try {
+                            Thread.sleep(100,0); // lower cpu if we wait and not just busy wait
+                        } catch (InterruptedException e) { e.printStackTrace();}
+                    }
+
                     counter++;
                 }
 
