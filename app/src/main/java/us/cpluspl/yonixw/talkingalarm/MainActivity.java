@@ -176,8 +176,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void tellTime(Calendar g) {
 
+        // my place in my phone :
+        // This PC-<PhoneName>-Internal storage-Android-data-us.cpluspl.yonixw.talkingalarm-files
 
+        mySounds.addWAVSound("ringtone"); // put empty if you dont want.
         HebrewSpeakingConstantSounds.addDateSounds(g,mySounds);
+
         setMaxVolume();
         try {
             Thread.sleep(1000,0); // let volume adjust

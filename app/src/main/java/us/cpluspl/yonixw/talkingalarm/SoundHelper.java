@@ -42,6 +42,10 @@ public class SoundHelper {
         loadedSounds.add(getMediaPlayer(shortName));
     }
 
+    /**
+     * Add sound to the media player. the file must have wav extention even if the format is mp3
+     * @param shortName the name of the file (ex. /../../music.wav => music)
+     */
     public void addWAVSound(String shortName) {
         addSound(shortName + ".wav");
     }
