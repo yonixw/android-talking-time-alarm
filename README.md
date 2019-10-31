@@ -10,4 +10,4 @@ Just let the phone tell you the time! [In Hebrew]
 2. Install apk and give permission if needed (does not ask by itself)
 3. Copy all voices files (*.wav) to `<public storage (sd)>/Android/data/us.cpluspl.yonixw.talkingalarm/files` when public storage should be on sd, in my case it was `/storage/emulated/0`
 4. Run app, if you hear the time you done!
-5. Using task scheduler start the app when you wnat alarm. (I recommend Lama)
+5. Using task scheduler start the app when you wnat alarm. (I recommend Automate (Llama is outdated))
